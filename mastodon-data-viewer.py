@@ -422,7 +422,10 @@ def load_toots(actor):
 		allItems = j["orderedItems"]
 		print("Loading toots for the first time")
 		for i in tqdm(range(totalItems)):
-			item = allItems[i]
+			try:
+				item = allItems[i]
+			except:
+				continue
 			if (item["type"] != "Create"):
 				continue
 			obj = item["object"].to_python()
@@ -440,7 +443,7 @@ def bin_monthly(toots):
 	return monthly
 
 def search_text_in_toot(toot, searchtext):
-	searchregex = re.compile(r"\b" + searchtext + r"\b", flags=re.I)
+	searchregex = re.compile(searchtext, flags=re.I)
 	def check_key(key):
 		return toot[key] is not None and searchregex.search(toot[key])
 	if check_key("content") or check_key("summary"):
